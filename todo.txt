@@ -1,0 +1,12 @@
+Things we will need:
+
+- Function that takes a list, randomly matches and puts out a hash table
+- Function to determine if a number is even or odd ( use "if (([Math]::Floor($n/2) * 2) -eq $n) { $true }" )
+- Structure for input of names list
+
+Hard parts?:
+
+- Specifying up to 5 people to be "Primary" and not allowing them to match with another "Primary"
+- Modifying it so that people can't be matched with the same person twice without going through 4 other matches
+- 
+
