@@ -1,7 +1,7 @@
 Things we will need:
 
 - Function that takes a list, randomly matches and puts out a hash table
-- Function to determine if a number is even or odd ( use "if (([Math]::Floor($n/2) * 2) -eq $n) { $true }" )
+- Function to determine if a number is even or odd ( use "if (([Math]::Floor($n/2) * 2) -eq $n) { $true }" or "if ($n % 2 -eq 0) { $true }" )
 - Structure for input of names list
 
 Hard parts?:
