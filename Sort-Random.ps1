@@ -19,10 +19,13 @@ Changelog:
     Fixed bug with duplicate names in $list2 getting removed at the same time by switching to removing them
     by their random (and unique) index number instead. Added support for Primary selections and set extra odd-match
     to process as a primary.
+    Addendum: Fixed a bug with selection of odd extras introduced with Primary handling.
 ######################################################################################>
 
 $testnames = "Syed, Kim, Sam, Hazem, Pilar, Terry, Amy, Greg, Pamela, Julie, David, Robert, Shai, Ann, Mason, Sharon, Dude"
 $testnames = ($testnames.split(',')).trim()
+$testprimes = "Martan, Leonard, Sheldon, Madison"
+$testprimes = ($testprimes.split(',')).trim()
 
 function Sort-Random {
 <#
@@ -67,6 +70,10 @@ function Sort-Random {
     $continue = $True
 
     $count = $Names.count + $Primary.count
+    $PrimaryList = @()
+    if ($Primary) { #if needed to prevent a blank primary from being added when Primary not used
+        $PrimaryList += $Primary #allows us to break the validation count later
+    }
 
     if ($count % 2 -eq 1) { 
         #Note: to make this work, we should mark the person getting a second partner as a Primary.
@@ -74,8 +81,9 @@ function Sort-Random {
         Write-Warning "The number of people in your list is $($count), which is an odd number."
         Write-Warning "Please select a person to get two partners:"
         $i = 1
+        $OddList = $PrimaryList + $Names
         $PossibleSelections = @()
-        foreach ($name in $Primary) {
+        foreach ($name in $PrimaryList) {
             Write-Output "$($i): $name (Primary)"
             $PossibleSelections += "$i"
             $i ++
@@ -97,14 +105,14 @@ function Sort-Random {
             $continue = $false
         }
         else {
-            $extra = $names[[int]$selection - 1]
+            $extra = $OddList[[int]$selection - 1]
             Write-Warning "$extra selected to take multiple partners."
-            if ($extra -notin $Primary) {
+            if ($extra -notin $PrimaryList) {
                 #Ugly way to remove a string from a string array, but it works:
                 $Names = $Names | foreach {if ($_ -ne $extra) {$_}}
-                $Primary += $extra
+                $PrimaryList += $extra
             }
-            $Primary += $extra
+            $PrimaryList += $extra
             $count ++  #This is needed later on for sorting the lists
         }
     }
@@ -113,7 +121,7 @@ function Sort-Random {
         $GetRandom = $true
         while ($GetRandom) {
             $MasterList = @()
-            $MasterList += foreach ($name in $Primary) {
+            $MasterList += foreach ($name in $PrimaryList) {
                 $random = Get-Random -Minimum 1 -Maximum 50000
                 $props = @{'Name' = $name;
                            'Random' = $random}
@@ -152,4 +160,4 @@ function Sort-Random {
     }
 }
 
-Sort-Random $testnames
+Sort-Random -Names $testnames -Primary $testprimes
