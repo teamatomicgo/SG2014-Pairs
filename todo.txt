@@ -10,3 +10,8 @@ Hard parts?:
 - Modifying it so that people can't be matched with the same person twice without going through 4 other matches
 - 
 
+Output:
+
+- save output to a file dt stamp.
+- function to load a directory of output and load into excel.
+- function to build reports...  
