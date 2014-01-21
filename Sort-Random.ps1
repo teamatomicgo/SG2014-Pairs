@@ -151,7 +151,7 @@ function Sort-Random {
             $partner = $list2 | Get-Random # | where name -notin $exceptions
             $list2 = $list2 | where Random -ne $partner.Random
             $props = @{'Name' = $name.name;
-                       'Parter' = $partner.name}
+                       'Partner' = $partner.name}
 
             $obj = New-Object -TypeName PSObject -Property $props
             Write-Output $obj
